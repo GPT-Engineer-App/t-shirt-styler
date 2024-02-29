@@ -7,8 +7,26 @@ const Index = () => {
   const [tshirtColor, setTshirtColor] = useState("white");
   const [design, setDesign] = useState("");
   const [text, setText] = useState("");
-  const [textPosX, setTextPosX] = useState(50);
-  const [textPosY, setTextPosY] = useState(50);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragPosition, setDragPosition] = useState({ x: 50, y: 50 });
+
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    setDragPosition({ x: e.clientX, y: e.clientY });
+  };
+
+  const handleMouseMove = (e) => {
+    if (isDragging) {
+      setDragPosition({
+        x: dragPosition.x + e.movementX,
+        y: dragPosition.y + e.movementY,
+      });
+    }
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
 
   const saveDesign = () => {
     toast({
@@ -27,7 +45,7 @@ const Index = () => {
           <Image src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1MDcxMzJ8MHwxfHNlYXJjaHwxfHx0LXNoaXJ0fGVufDB8fHx8MTcwOTIyNTM5Mnww&ixlib=rb-4.0.3&q=80&w=1080" alt="T-shirt" />
           {design && <Image src={design} alt="T-shirt design" maxWidth="100%" maxHeight="100%" position="absolute" top="50%" left="50%" transform="translate(-50%, -50%)" />}
           {text && (
-            <Text position="absolute" left={`${textPosX}%`} bottom={`${textPosY}%`} transform="translate(-50%, -50%)" fontWeight="bold" color={tshirtColor === "black" ? "white" : "black"}>
+            <Text position="absolute" cursor="grab" left={`${dragPosition.x}px`} bottom={`${dragPosition.y}px`} transform="translate(-50%, -50%)" fontWeight="bold" color={tshirtColor === "black" ? "white" : "black"} onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}>
               {text}
             </Text>
           )}
@@ -46,10 +64,7 @@ const Index = () => {
         <Button colorScheme="blue" leftIcon={<FaSave />} onClick={saveDesign}>
           Save Design
         </Button>
-        <VStack spacing={4}>
-          <Input type="range" min="0" max="100" value={textPosX} onChange={(e) => setTextPosX(Number(e.target.value))} />
-          <Input type="range" min="0" max="100" value={textPosY} onChange={(e) => setTextPosY(Number(e.target.value))} />
-        </VStack>
+        // Remove the VStack containing range inputs for textPosX and textPosY since they are no longer used.
         <Button colorScheme="blue" leftIcon={<FaSave />} onClick={saveDesign}>
           Save Design
         </Button>
