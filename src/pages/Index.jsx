@@ -7,6 +7,8 @@ const Index = () => {
   const [tshirtColor, setTshirtColor] = useState("white");
   const [design, setDesign] = useState("");
   const [text, setText] = useState("");
+  const [textPosX, setTextPosX] = useState(50);
+  const [textPosY, setTextPosY] = useState(50);
 
   const saveDesign = () => {
     toast({
@@ -25,7 +27,7 @@ const Index = () => {
           <Image src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1MDcxMzJ8MHwxfHNlYXJjaHwxfHx0LXNoaXJ0fGVufDB8fHx8MTcwOTIyNTM5Mnww&ixlib=rb-4.0.3&q=80&w=1080" alt="T-shirt" />
           {design && <Image src={design} alt="T-shirt design" maxWidth="100%" maxHeight="100%" position="absolute" top="50%" left="50%" transform="translate(-50%, -50%)" />}
           {text && (
-            <Text position="absolute" bottom="20%" left="50%" transform="translateX(-50%)" fontWeight="bold" color={tshirtColor === "black" ? "white" : "black"}>
+            <Text position="absolute" left={`${textPosX}%`} bottom={`${textPosY}%`} transform="translate(-50%, -50%)" fontWeight="bold" color={tshirtColor === "black" ? "white" : "black"}>
               {text}
             </Text>
           )}
@@ -38,9 +40,16 @@ const Index = () => {
           <option value="black">Black</option>
         </Select>
         <Input placeholder="Add text" value={text} onChange={(e) => setText(e.target.value)} />
-        <Button leftIcon={<FaPaintBrush />} onClick={() => setDesign('https://images.unsplash.com/photo-1621951753015-740c699ab970?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1MDcxMzJ8MHwxfHNlYXJjaHwxfHx0LXNoaXJ0JTIwZGVzaWdufGVufDB8fHx8MTcwOTIyNTM5Mnww&ixlib=rb-4.0.3&q=80&w=1080')}>
+        <Button leftIcon={<FaPaintBrush />} onClick={() => setDesign("https://images.unsplash.com/photo-1621951753015-740c699ab970?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1MDcxMzJ8MHwxfHNlYXJjaHwxfHx0LXNoaXJ0JTIwZGVzaWdufGVufDB8fHx8MTcwOTIyNTM5Mnww&ixlib=rb-4.0.3&q=80&w=1080")}>
           Add design
         </Button>
+        <Button colorScheme="blue" leftIcon={<FaSave />} onClick={saveDesign}>
+          Save Design
+        </Button>
+        <VStack spacing={4}>
+          <Input type="range" min="0" max="100" value={textPosX} onChange={(e) => setTextPosX(Number(e.target.value))} />
+          <Input type="range" min="0" max="100" value={textPosY} onChange={(e) => setTextPosY(Number(e.target.value))} />
+        </VStack>
         <Button colorScheme="blue" leftIcon={<FaSave />} onClick={saveDesign}>
           Save Design
         </Button>
